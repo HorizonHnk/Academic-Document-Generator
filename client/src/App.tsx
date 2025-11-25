@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ChatbotWidget } from "@/components/chatbot-widget";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 import Home from "@/pages/home";
 import MyProjects from "@/pages/my-projects";
 import GenerateReport from "@/pages/generate-report";
