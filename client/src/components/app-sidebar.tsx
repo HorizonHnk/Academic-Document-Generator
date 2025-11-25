@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Home,
@@ -10,7 +11,14 @@ import {
   Info,
   Mail,
   Settings,
+  LogIn,
+  LogOut,
+  User,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AuthDialog } from "@/components/auth-dialog";
+import { onAuthChange, signOut } from "@/lib/firebase";
+import type { User as FirebaseUser } from "firebase/auth";
 import {
   Sidebar,
   SidebarContent,
@@ -86,10 +94,27 @@ const supportItems = [
 export function AppSidebar() {
   const [location] = useLocation();
   const { setOpenMobile, isMobile } = useSidebar();
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [user, setUser] = useState<FirebaseUser | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthChange((authUser) => {
+      setUser(authUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleNavClick = () => {
     if (isMobile) {
       setOpenMobile(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Sign out error:", error);
     }
   };
 
@@ -174,11 +199,58 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
-        <div className="text-xs text-muted-foreground">
+      <SidebarFooter className="p-4 space-y-3">
+        {user ? (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/50">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                {user.photoURL ? (
+                  <img 
+                    src={user.photoURL} 
+                    alt="Profile" 
+                    className="h-8 w-8 rounded-full"
+                  />
+                ) : (
+                  <User className="h-4 w-4 text-primary" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">
+                  {user.displayName || "User"}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {user.email}
+                </p>
+              </div>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="w-full gap-2"
+              onClick={handleSignOut}
+              data-testid="button-sign-out"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </Button>
+          </div>
+        ) : (
+          <Button 
+            variant="outline" 
+            className="w-full gap-2"
+            onClick={() => setShowAuthDialog(true)}
+            data-testid="button-sign-in"
+          >
+            <LogIn className="h-4 w-4" />
+            Sign In / Sign Up
+          </Button>
+        )}
+        <div className="text-xs text-muted-foreground text-center">
           Powered by Google Gemini AI
         </div>
       </SidebarFooter>
+
+      <AuthDialog open={showAuthDialog} onOpenChange={setShowAuthDialog} />
     </Sidebar>
   );
 }
