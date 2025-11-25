@@ -245,9 +245,6 @@ export function AppSidebar() {
             Sign In / Sign Up
           </Button>
         )}
-        <div className="text-xs text-muted-foreground text-center">
-          Powered by Google Gemini AI
-        </div>
       </SidebarFooter>
 
       <AuthDialog open={showAuthDialog} onOpenChange={setShowAuthDialog} />
