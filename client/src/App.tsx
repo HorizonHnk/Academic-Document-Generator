@@ -44,24 +44,27 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <SidebarProvider style={sidebarStyle as React.CSSProperties}>
-          <div className="flex min-h-screen w-full">
-            <AppSidebar />
-            <SidebarInset className="flex flex-col flex-1">
-              <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:px-6">
-                <SidebarTrigger data-testid="button-sidebar-toggle" />
-                <div className="flex-1" />
-              </header>
-              <main className="flex-1 overflow-auto">
-                <Router />
-              </main>
-            </SidebarInset>
-          </div>
-        </SidebarProvider>
-        <ChatbotWidget />
-        <Toaster />
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <SidebarProvider style={sidebarStyle as React.CSSProperties}>
+            <div className="flex min-h-screen w-full">
+              <AppSidebar />
+              <SidebarInset className="flex flex-col flex-1">
+                <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:px-6">
+                  <SidebarTrigger data-testid="button-sidebar-toggle" />
+                  <div className="flex-1" />
+                  <ThemeToggle />
+                </header>
+                <main className="flex-1 overflow-auto">
+                  <Router />
+                </main>
+              </SidebarInset>
+            </div>
+          </SidebarProvider>
+          <ChatbotWidget />
+          <Toaster />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
