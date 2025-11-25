@@ -23,6 +23,9 @@ Preferred communication style: Simple, everyday language.
 - `/generate/powerpoint` - Presentation generator
 - `/generate/conference` - Conference paper generator
 - `/generate/thesis` - Thesis/dissertation generator
+- `/about` - About page with feature overview
+- `/contact` - Contact form page
+- `/settings` - User preferences and API key configuration
 
 **State Management**: TanStack Query (React Query) for server state management with optimistic updates and cache invalidation. Local component state managed with React hooks.
 
