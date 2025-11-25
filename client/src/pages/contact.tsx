@@ -58,7 +58,7 @@ export default function Contact() {
   ];
 
   return (
-    <div className="container max-w-4xl py-8 px-4" data-testid="page-contact">
+    <div className="container max-w-6xl py-8 px-4 mx-auto" data-testid="page-contact">
       <div className="space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">Contact Us</h1>
