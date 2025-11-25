@@ -115,7 +115,7 @@ export default function About() {
 
         <Card>
           <CardHeader>
-            <CardTitle>About HNK</CardTitle>
+            <CardTitle>About the Author</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground leading-relaxed">
