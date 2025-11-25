@@ -116,7 +116,7 @@ export default function Home() {
                       ))}
                     </div>
                     <Button className="w-full mt-4" variant="outline" data-testid={`button-generate-${doc.id}`}>
-                      Generate {doc.title}
+                      <span className="truncate">Generate</span>
                     </Button>
                   </CardContent>
                 </Card>
