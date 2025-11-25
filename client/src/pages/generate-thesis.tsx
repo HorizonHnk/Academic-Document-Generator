@@ -184,36 +184,11 @@ export default function GenerateThesis() {
                       <SelectValue placeholder="Select thesis type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="2-5">
-                        <div className="flex flex-col items-start">
-                          <span className="font-medium">2-5 Pages - Research Proposal</span>
-                          <span className="text-xs text-muted-foreground">Brief summary or conference paper</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="6-15">
-                        <div className="flex flex-col items-start">
-                          <span className="font-medium">6-15 Pages - Undergraduate Project</span>
-                          <span className="text-xs text-muted-foreground">Final year projects or capstone papers</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="16-30">
-                        <div className="flex flex-col items-start">
-                          <span className="font-medium">16-30 Pages - Bachelors/Honors Thesis</span>
-                          <span className="text-xs text-muted-foreground">Full literature review, methodology & results</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="31-60">
-                        <div className="flex flex-col items-start">
-                          <span className="font-medium">31-60 Pages - Masters Thesis</span>
-                          <span className="text-xs text-muted-foreground">Comprehensive study with data analysis</span>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="60+">
-                        <div className="flex flex-col items-start">
-                          <span className="font-medium">60+ Pages - PhD Dissertation</span>
-                          <span className="text-xs text-muted-foreground">Extensive original doctoral research</span>
-                        </div>
-                      </SelectItem>
+                      <SelectItem value="2-5">2-5 Pages - Research Proposal / Brief Summary</SelectItem>
+                      <SelectItem value="6-15">6-15 Pages - Undergraduate Project Report</SelectItem>
+                      <SelectItem value="16-30">16-30 Pages - Bachelors/Honors Thesis</SelectItem>
+                      <SelectItem value="31-60">31-60 Pages - Masters Thesis / Comprehensive Study</SelectItem>
+                      <SelectItem value="60+">60+ Pages - PhD Dissertation</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
