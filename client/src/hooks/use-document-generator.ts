@@ -4,6 +4,21 @@ import { apiRequest } from "@/lib/queryClient";
 import type { DocumentType, ToneType } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
+export interface Author {
+  name: string;
+  affiliation: string;
+  email: string;
+}
+
+export interface CustomFormat {
+  fontSize: string;
+  lineSpacing: string;
+  padding: string;
+  textAlign: string;
+  textColor: string;
+  fontFamily: string;
+}
+
 export interface GeneratorOptions {
   topic: string;
   targetLength?: string;
@@ -12,6 +27,16 @@ export interface GeneratorOptions {
   slideCount?: string;
   targetPages?: string;
   generateImages?: boolean;
+  template?: string;
+  authors?: Author[];
+  customFormat?: CustomFormat;
+  includeToc?: boolean;
+}
+
+interface GeneratorResponse {
+  content?: any;
+  success?: boolean;
+  message?: string;
 }
 
 export function useDocumentGenerator(documentType: DocumentType) {
@@ -20,11 +45,11 @@ export function useDocumentGenerator(documentType: DocumentType) {
   const { toast } = useToast();
 
   const generateMutation = useMutation({
-    mutationFn: async (options: GeneratorOptions) => {
+    mutationFn: async (options: GeneratorOptions): Promise<GeneratorResponse> => {
       setProgress(30);
       
       const endpoint = `/api/generate/${documentType}`;
-      const response = await apiRequest("POST", endpoint, options);
+      const response = await apiRequest("POST", endpoint, options) as GeneratorResponse;
       
       setProgress(60);
       
@@ -37,7 +62,7 @@ export function useDocumentGenerator(documentType: DocumentType) {
       
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: GeneratorResponse) => {
       setProgress(100);
       setGeneratedContent(data.content);
       toast({

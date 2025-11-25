@@ -1,37 +1,92 @@
 import { useState } from "react";
-import { FileSpreadsheet, Sparkles, Upload, Download, Save, X, FileIcon } from "lucide-react";
+import { BookOpen, Sparkles, Upload, Download, Save, X, FileIcon, Settings, UserPlus, Trash2 } from "lucide-react";
 import { GeneratorLayout } from "@/components/generator-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useDocumentGenerator } from "@/hooks/use-document-generator";
 import { useRandomTopic } from "@/hooks/use-random-topic";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { useToast } from "@/hooks/use-toast";
 import type { ToneType } from "@shared/schema";
 
+interface Author {
+  name: string;
+  affiliation: string;
+  email: string;
+}
+
 export default function GenerateConference() {
   const [topic, setTopic] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState("CONF_PAPER");
   const [targetPages, setTargetPages] = useState("auto");
+  const [tone, setTone] = useState<ToneType>("academic");
   const [citationStyle, setCitationStyle] = useState("ieee");
   const [generateImages, setGenerateImages] = useState(true);
+  
+  const [useManualAuthors, setUseManualAuthors] = useState(false);
+  const [authors, setAuthors] = useState<Author[]>([{ name: "", affiliation: "", email: "" }]);
+  
+  const [useCustomFormatting, setUseCustomFormatting] = useState(false);
+  const [customFormat, setCustomFormat] = useState({
+    fontSize: "12",
+    lineSpacing: "1.5",
+    padding: "1.5",
+    textAlign: "justify",
+    textColor: "#000000",
+    fontFamily: "Times New Roman"
+  });
+  
+  const [showAdvanced, setShowAdvanced] = useState(false);
   
   const { generate, isGenerating, generatedContent, progress } = useDocumentGenerator("conference");
   const { generateTopic, isLoading: isLoadingTopic } = useRandomTopic();
   const { uploadedFiles, isProcessing, extractedText, handleFileUpload, removeFile } = useFileUpload();
   const { toast } = useToast();
 
+  const addAuthor = () => {
+    setAuthors([...authors, { name: "", affiliation: "", email: "" }]);
+  };
+
+  const removeAuthor = (index: number) => {
+    if (authors.length > 1) {
+      setAuthors(authors.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateAuthor = (index: number, field: keyof Author, value: string) => {
+    const updated = [...authors];
+    updated[index][field] = value;
+    setAuthors(updated);
+  };
+
+  const handleGenerate = () => {
+    const finalTopic = extractedText ? `${topic}\n\nAdditional Context:\n${extractedText}` : topic;
+    generate({
+      topic: finalTopic,
+      template: selectedTemplate,
+      targetPages,
+      tone,
+      citationStyle,
+      generateImages,
+      authors: useManualAuthors ? authors : undefined,
+      customFormat: useCustomFormatting ? customFormat : undefined,
+    });
+  };
+
   return (
     <GeneratorLayout
       title="Conference Paper Generator"
       description="IEEE-formatted papers with proper citations and academic structure"
-      icon={<FileSpreadsheet className="w-6 h-6 text-white" />}
+      icon={<BookOpen className="w-6 h-6 text-white" />}
       gradient="from-purple-500 to-pink-500"
     >
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -81,7 +136,7 @@ export default function GenerateConference() {
                   </Button>
                 </TabsContent>
                 <TabsContent value="upload" className="space-y-4">
-                  <div className="border-2 border-dashed rounded-lg p-8 text-center hover-elevate transition-colors">
+                  <div className="relative border-2 border-dashed rounded-lg p-8 text-center hover-elevate transition-colors">
                     <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                     <p className="text-sm text-muted-foreground mb-2">
                       Drop files here or click to browse
@@ -125,42 +180,79 @@ export default function GenerateConference() {
               <div className="space-y-4 pt-4 border-t">
                 <div>
                   <Label>Template Format</Label>
-                  <RadioGroup defaultValue="ieee" className="mt-2 space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="ieee" id="ieee" data-testid="radio-ieee" />
-                      <Label htmlFor="ieee" className="font-normal cursor-pointer">
-                        IEEE Conference Paper (Two-column)
-                      </Label>
-                    </div>
-                  </RadioGroup>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <Button
+                      variant={selectedTemplate === "CONF_PAPER" ? "default" : "outline"}
+                      className="w-full justify-start"
+                      onClick={() => setSelectedTemplate("CONF_PAPER")}
+                      data-testid="button-template-conference"
+                    >
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Conference (IEEE)
+                    </Button>
+                    <Button
+                      variant={selectedTemplate === "THESIS" ? "default" : "outline"}
+                      className="w-full justify-start"
+                      onClick={() => setSelectedTemplate("THESIS")}
+                      data-testid="button-template-thesis"
+                    >
+                      <FileIcon className="w-4 h-4 mr-2" />
+                      Thesis Style
+                    </Button>
+                  </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="target-pages">Target Length</Label>
-                  <Select value={targetPages} onValueChange={setTargetPages}>
-                    <SelectTrigger id="target-pages" className="mt-2" data-testid="select-target-length">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="auto">Auto (AI-determined)</SelectItem>
-                      <SelectItem value="4-6">4-6 Pages</SelectItem>
-                      <SelectItem value="7-10">7-10 Pages</SelectItem>
-                      <SelectItem value="10+">10+ Pages</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label>Target Length</Label>
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {["auto", "1-2", "3-5", "6-10", "10+"].map((pages) => (
+                      <Button
+                        key={pages}
+                        variant={targetPages === pages ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setTargetPages(pages)}
+                        data-testid={`button-pages-${pages}`}
+                      >
+                        {pages === "auto" ? "Auto" : `${pages} Pages`}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="citation-style">Citation Style</Label>
-                  <Select value={citationStyle} onValueChange={setCitationStyle}>
-                    <SelectTrigger id="citation-style" className="mt-2" data-testid="select-citation-style">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="ieee">IEEE (Numbered)</SelectItem>
-                      <SelectItem value="auto">Auto-detect</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label>Tone & Style</Label>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    {(["academic", "professional", "essay", "creative"] as ToneType[]).map((t) => (
+                      <Button
+                        key={t}
+                        variant={tone === t ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setTone(t)}
+                        className="capitalize"
+                        data-testid={`button-tone-${t}`}
+                      >
+                        {t}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Reference Style</Label>
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {["auto", "harvard", "ieee"].map((style) => (
+                      <Button
+                        key={style}
+                        variant={citationStyle === style ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCitationStyle(style)}
+                        className="uppercase"
+                        data-testid={`button-citation-${style}`}
+                      >
+                        {style}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -174,19 +266,200 @@ export default function GenerateConference() {
                 </div>
               </div>
 
+              <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-between" data-testid="button-advanced-settings">
+                    <span className="flex items-center gap-2">
+                      <Settings className="w-4 h-4" />
+                      Advanced Settings
+                    </span>
+                    <span className={`transition-transform ${showAdvanced ? "rotate-180" : ""}`}>
+                      ▼
+                    </span>
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-4 pt-4">
+                  <div className="space-y-4 p-4 border rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <Label>Manual Author Details</Label>
+                      <Switch
+                        checked={useManualAuthors}
+                        onCheckedChange={setUseManualAuthors}
+                        data-testid="switch-manual-authors"
+                      />
+                    </div>
+                    
+                    {useManualAuthors && (
+                      <div className="space-y-4">
+                        {authors.map((author, index) => (
+                          <div key={index} className="space-y-2 p-3 border rounded-lg bg-muted/20">
+                            <div className="flex items-center justify-between">
+                              <Label className="text-sm font-medium">Author {index + 1}</Label>
+                              {authors.length > 1 && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => removeAuthor(index)}
+                                  data-testid={`button-remove-author-${index}`}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              )}
+                            </div>
+                            <Input
+                              placeholder="Full Name"
+                              value={author.name}
+                              onChange={(e) => updateAuthor(index, "name", e.target.value)}
+                              data-testid={`input-author-name-${index}`}
+                            />
+                            <Input
+                              placeholder="Affiliation (University/Organization)"
+                              value={author.affiliation}
+                              onChange={(e) => updateAuthor(index, "affiliation", e.target.value)}
+                              data-testid={`input-author-affiliation-${index}`}
+                            />
+                            <Input
+                              type="email"
+                              placeholder="Email Address"
+                              value={author.email}
+                              onChange={(e) => updateAuthor(index, "email", e.target.value)}
+                              data-testid={`input-author-email-${index}`}
+                            />
+                          </div>
+                        ))}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={addAuthor}
+                          className="w-full"
+                          data-testid="button-add-author"
+                        >
+                          <UserPlus className="w-4 h-4 mr-2" />
+                          Add Author
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-4 p-4 border rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <Label>Custom Formatting</Label>
+                      <Switch
+                        checked={useCustomFormatting}
+                        onCheckedChange={setUseCustomFormatting}
+                        data-testid="switch-custom-formatting"
+                      />
+                    </div>
+                    
+                    {useCustomFormatting && (
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <Label className="text-xs">Font Size</Label>
+                          <Select
+                            value={customFormat.fontSize}
+                            onValueChange={(v) => setCustomFormat({ ...customFormat, fontSize: v })}
+                          >
+                            <SelectTrigger data-testid="select-font-size">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="10">10pt</SelectItem>
+                              <SelectItem value="11">11pt</SelectItem>
+                              <SelectItem value="12">12pt</SelectItem>
+                              <SelectItem value="14">14pt</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Line Spacing</Label>
+                          <Select
+                            value={customFormat.lineSpacing}
+                            onValueChange={(v) => setCustomFormat({ ...customFormat, lineSpacing: v })}
+                          >
+                            <SelectTrigger data-testid="select-line-spacing">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1.0">1.0</SelectItem>
+                              <SelectItem value="1.15">1.15</SelectItem>
+                              <SelectItem value="1.5">1.5</SelectItem>
+                              <SelectItem value="2.0">2.0</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Margins (cm)</Label>
+                          <Select
+                            value={customFormat.padding}
+                            onValueChange={(v) => setCustomFormat({ ...customFormat, padding: v })}
+                          >
+                            <SelectTrigger data-testid="select-margins">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="0.5">0.5cm</SelectItem>
+                              <SelectItem value="1.0">1.0cm</SelectItem>
+                              <SelectItem value="1.5">1.5cm</SelectItem>
+                              <SelectItem value="2.0">2.0cm</SelectItem>
+                              <SelectItem value="2.5">2.5cm</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Text Align</Label>
+                          <Select
+                            value={customFormat.textAlign}
+                            onValueChange={(v) => setCustomFormat({ ...customFormat, textAlign: v })}
+                          >
+                            <SelectTrigger data-testid="select-text-align">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="justify">Justify</SelectItem>
+                              <SelectItem value="left">Left</SelectItem>
+                              <SelectItem value="center">Center</SelectItem>
+                              <SelectItem value="right">Right</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Font Family</Label>
+                          <Select
+                            value={customFormat.fontFamily}
+                            onValueChange={(v) => setCustomFormat({ ...customFormat, fontFamily: v })}
+                          >
+                            <SelectTrigger data-testid="select-font-family">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Times New Roman">Times New Roman</SelectItem>
+                              <SelectItem value="Arial">Arial</SelectItem>
+                              <SelectItem value="Calibri">Calibri</SelectItem>
+                              <SelectItem value="Georgia">Georgia</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs">Text Color</Label>
+                          <Input
+                            type="color"
+                            value={customFormat.textColor}
+                            onChange={(e) => setCustomFormat({ ...customFormat, textColor: e.target.value })}
+                            className="h-9 w-full cursor-pointer"
+                            data-testid="input-text-color"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
               <Button
                 className="w-full"
                 size="lg"
                 disabled={!topic.trim() || isGenerating || isProcessing}
-                onClick={() => {
-                  const finalTopic = extractedText ? `${topic}\n\nAdditional Context:\n${extractedText}` : topic;
-                  generate({
-                    topic: finalTopic,
-                    targetPages,
-                    citationStyle,
-                    generateImages,
-                  });
-                }}
+                onClick={handleGenerate}
                 data-testid="button-generate-paper"
               >
                 {isGenerating ? (
@@ -205,7 +478,7 @@ export default function GenerateConference() {
         <div className="lg:col-span-3 space-y-6">
           <Card className="h-full">
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between flex-wrap gap-2">
                 <div>
                   <CardTitle>Paper Preview</CardTitle>
                   <CardDescription>Real-time preview of your conference paper</CardDescription>
@@ -227,7 +500,7 @@ export default function GenerateConference() {
                 <div className="space-y-4 mb-6">
                   <Progress value={progress} className="w-full" />
                   <div className="text-sm text-muted-foreground text-center">
-                    Generating IEEE-formatted paper...
+                    Generating {selectedTemplate === "THESIS" ? "thesis-style" : "IEEE-formatted"} paper...
                   </div>
                 </div>
               )}
@@ -261,7 +534,7 @@ export default function GenerateConference() {
                   </div>
                 ) : (
                   <div className="text-center text-muted-foreground py-16">
-                    <FileSpreadsheet className="w-16 h-16 mx-auto mb-4 opacity-20" />
+                    <BookOpen className="w-16 h-16 mx-auto mb-4 opacity-20" />
                     <p>Your conference paper will appear here</p>
                     <p className="text-sm mt-2">Configure settings and click "Generate Conference Paper" to start</p>
                   </div>
