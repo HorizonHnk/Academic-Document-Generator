@@ -202,7 +202,7 @@ export function ChatbotWidget() {
             onClick={() => setIsOpen(true)}
             data-testid="button-open-chatbot"
           >
-            <MessageCircle className="h-6 w-6" />
+            <Bot className="h-6 w-6" />
           </Button>
         )}
       </div>
