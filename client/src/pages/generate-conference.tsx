@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Sparkles, Upload, Download, Save, X, FileIcon, Settings, UserPlus, Trash2, FileCode, Printer, Cloud } from "lucide-react";
+import { BookOpen, Sparkles, Upload, Download, Save, X, FileIcon, Settings, UserPlus, Trash2, FileCode, Printer, Cloud, FileDown } from "lucide-react";
 import { GeneratorLayout } from "@/components/generator-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -466,6 +466,10 @@ export default function GenerateConference() {
                       <DropdownMenuItem data-testid="export-html">
                         <FileCode className="w-4 h-4 mr-2" />
                         Export as HTML (IEEE)
+                      </DropdownMenuItem>
+                      <DropdownMenuItem data-testid="export-docx">
+                        <FileDown className="w-4 h-4 mr-2" />
+                        Export as Word (.docx)
                       </DropdownMenuItem>
                       <DropdownMenuItem data-testid="export-pdf">
                         <Printer className="w-4 h-4 mr-2" />
