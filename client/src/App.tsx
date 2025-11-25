@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { ChatbotWidget } from "@/components/chatbot-widget";
 import Home from "@/pages/home";
 import MyProjects from "@/pages/my-projects";
 import GenerateReport from "@/pages/generate-report";
@@ -56,6 +57,7 @@ function App() {
             </SidebarInset>
           </div>
         </SidebarProvider>
+        <ChatbotWidget />
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
