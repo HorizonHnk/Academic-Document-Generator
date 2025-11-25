@@ -198,11 +198,11 @@ export function ChatbotWidget() {
           <Button
             size="lg"
             variant="outline"
-            className="h-16 w-12 rounded-lg shadow-lg opacity-50 bg-background/30 backdrop-blur-sm border-primary/30 text-primary hover:opacity-100 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+            className="h-20 w-14 rounded-lg shadow-lg opacity-50 bg-background/30 backdrop-blur-sm border-primary/30 text-primary hover:opacity-100 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
             onClick={() => setIsOpen(true)}
             data-testid="button-open-chatbot"
           >
-            <Bot className="h-8 w-8" />
+            <Bot className="h-10 w-10" />
           </Button>
         )}
       </div>
