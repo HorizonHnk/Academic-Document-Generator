@@ -201,7 +201,7 @@ export default function About() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground leading-relaxed">
-              HNK is a Computer Engineer based in Cape Town, South Africa, with a versatile skill set spanning software development, scientific computing, network infrastructure and electronics and embedded systems.
+              HNK is a Computer Engineer based in Cape Town, South Africa, with a versatile skill set spanning software development, scientific computing, network infrastructure, electronics and embedded systems.
             </p>
             <div className="flex items-center gap-4 flex-wrap pt-2">
               <Button variant="outline" asChild data-testid="link-github-repo">
