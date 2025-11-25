@@ -177,56 +177,48 @@ export default function GenerateConference() {
 
               <div className="space-y-4 pt-4 border-t">
                 <div>
-                  <Label>Target Length</Label>
-                  <div className="grid grid-cols-3 gap-2 mt-2">
-                    {["auto", "1-2", "3-5", "6-10", "10+"].map((pages) => (
-                      <Button
-                        key={pages}
-                        variant={targetPages === pages ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setTargetPages(pages)}
-                        data-testid={`button-pages-${pages}`}
-                      >
-                        {pages === "auto" ? "Auto" : `${pages} Pages`}
-                      </Button>
-                    ))}
-                  </div>
+                  <Label htmlFor="target-length">Target Length</Label>
+                  <Select value={targetPages} onValueChange={setTargetPages}>
+                    <SelectTrigger id="target-length" className="mt-2" data-testid="select-target-length">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="auto">Auto (AI-determined)</SelectItem>
+                      <SelectItem value="1-2">1-2 Pages</SelectItem>
+                      <SelectItem value="3-5">3-5 Pages</SelectItem>
+                      <SelectItem value="6-10">6-10 Pages</SelectItem>
+                      <SelectItem value="10+">10+ Pages</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
-                  <Label>Tone & Style</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {(["academic", "professional", "essay", "creative"] as ToneType[]).map((t) => (
-                      <Button
-                        key={t}
-                        variant={tone === t ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setTone(t)}
-                        className="capitalize"
-                        data-testid={`button-tone-${t}`}
-                      >
-                        {t}
-                      </Button>
-                    ))}
-                  </div>
+                  <Label htmlFor="tone">Tone & Style</Label>
+                  <Select value={tone} onValueChange={(val) => setTone(val as ToneType)}>
+                    <SelectTrigger id="tone" className="mt-2" data-testid="select-tone">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="academic">Academic</SelectItem>
+                      <SelectItem value="professional">Professional</SelectItem>
+                      <SelectItem value="essay">Essay</SelectItem>
+                      <SelectItem value="creative">Creative</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
-                  <Label>Reference Style</Label>
-                  <div className="grid grid-cols-3 gap-2 mt-2">
-                    {["auto", "harvard", "ieee"].map((style) => (
-                      <Button
-                        key={style}
-                        variant={citationStyle === style ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setCitationStyle(style)}
-                        className="uppercase"
-                        data-testid={`button-citation-${style}`}
-                      >
-                        {style}
-                      </Button>
-                    ))}
-                  </div>
+                  <Label htmlFor="citation-style">Reference Style</Label>
+                  <Select value={citationStyle} onValueChange={setCitationStyle}>
+                    <SelectTrigger id="citation-style" className="mt-2" data-testid="select-citation-style">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="auto">Auto</SelectItem>
+                      <SelectItem value="harvard">Harvard</SelectItem>
+                      <SelectItem value="ieee">IEEE</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="flex items-center justify-between">

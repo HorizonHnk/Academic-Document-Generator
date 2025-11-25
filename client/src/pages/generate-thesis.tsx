@@ -194,39 +194,32 @@ export default function GenerateThesis() {
                 </div>
 
                 <div>
-                  <Label>Tone & Style</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    {(["academic", "professional", "essay", "creative"] as ToneType[]).map((t) => (
-                      <Button
-                        key={t}
-                        variant={tone === t ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setTone(t)}
-                        className="capitalize"
-                        data-testid={`button-tone-${t}`}
-                      >
-                        {t}
-                      </Button>
-                    ))}
-                  </div>
+                  <Label htmlFor="tone">Tone & Style</Label>
+                  <Select value={tone} onValueChange={(val) => setTone(val as ToneType)}>
+                    <SelectTrigger id="tone" className="mt-2" data-testid="select-tone">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="academic">Academic</SelectItem>
+                      <SelectItem value="professional">Professional</SelectItem>
+                      <SelectItem value="essay">Essay</SelectItem>
+                      <SelectItem value="creative">Creative</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
-                  <Label>Reference Style</Label>
-                  <div className="grid grid-cols-3 gap-2 mt-2">
-                    {["auto", "harvard", "ieee"].map((style) => (
-                      <Button
-                        key={style}
-                        variant={citationStyle === style ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setCitationStyle(style)}
-                        className="uppercase"
-                        data-testid={`button-citation-${style}`}
-                      >
-                        {style}
-                      </Button>
-                    ))}
-                  </div>
+                  <Label htmlFor="citation-style">Reference Style</Label>
+                  <Select value={citationStyle} onValueChange={setCitationStyle}>
+                    <SelectTrigger id="citation-style" className="mt-2" data-testid="select-citation-style">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="auto">Auto</SelectItem>
+                      <SelectItem value="harvard">Harvard</SelectItem>
+                      <SelectItem value="ieee">IEEE</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="flex items-center justify-between">
