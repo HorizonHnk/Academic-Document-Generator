@@ -7,6 +7,9 @@ import {
   BookOpen,
   GraduationCap,
   Sparkles,
+  Info,
+  Mail,
+  Settings,
 } from "lucide-react";
 import {
   Sidebar,
@@ -61,6 +64,24 @@ const generatorItems = [
   },
 ];
 
+const supportItems = [
+  {
+    title: "About",
+    url: "/about",
+    icon: Info,
+  },
+  {
+    title: "Contact",
+    url: "/contact",
+    icon: Mail,
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings,
+  },
+];
+
 export function AppSidebar() {
   const [location] = useLocation();
 
@@ -105,6 +126,28 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {generatorItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location === item.url}
+                    data-testid={`nav-${item.title.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    <Link href={item.url}>
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Support</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {supportItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild

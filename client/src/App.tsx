@@ -11,6 +11,9 @@ import GenerateReport from "@/pages/generate-report";
 import GeneratePowerPoint from "@/pages/generate-powerpoint";
 import GenerateConference from "@/pages/generate-conference";
 import GenerateThesis from "@/pages/generate-thesis";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import Settings from "@/pages/settings";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +25,9 @@ function Router() {
       <Route path="/generate/powerpoint" component={GeneratePowerPoint} />
       <Route path="/generate/conference" component={GenerateConference} />
       <Route path="/generate/thesis" component={GenerateThesis} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/settings" component={Settings} />
       <Route component={NotFound} />
     </Switch>
   );
