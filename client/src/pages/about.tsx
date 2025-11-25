@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { 
   Sparkles, 
   FileText, 
@@ -8,8 +9,11 @@ import {
   GraduationCap,
   Zap,
   Shield,
-  Globe
+  Globe,
+  ExternalLink
 } from "lucide-react";
+import { SiGithub, SiYoutube, SiTiktok } from "react-icons/si";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function About() {
   const features = [
@@ -106,6 +110,64 @@ export default function About() {
                 </ul>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Developer & Source Code</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-4 flex-wrap">
+              <Button variant="outline" asChild data-testid="link-github-repo">
+                <a 
+                  href="https://github.com/HorizonHnk/Academic-Document-Generator" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <SiGithub className="h-4 w-4" />
+                  View on GitHub
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              </Button>
+              <Button variant="outline" asChild data-testid="link-twitter">
+                <a 
+                  href="https://twitter.com/HnkHorizon" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <FaXTwitter className="h-4 w-4" />
+                  @HnkHorizon
+                </a>
+              </Button>
+              <Button variant="outline" asChild data-testid="link-youtube">
+                <a 
+                  href="https://youtube.com/@HNK2005" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <SiYoutube className="h-4 w-4" />
+                  @HNK2005
+                </a>
+              </Button>
+              <Button variant="outline" asChild data-testid="link-tiktok">
+                <a 
+                  href="https://tiktok.com/@codingfever" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <SiTiktok className="h-4 w-4" />
+                  @codingfever
+                </a>
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Built with passion for helping students and researchers create professional academic documents efficiently.
+            </p>
           </CardContent>
         </Card>
 

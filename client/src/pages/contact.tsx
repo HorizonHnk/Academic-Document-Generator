@@ -8,11 +8,11 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   Mail, 
   Send,
-  Github,
-  Twitter,
   MessageCircle,
   Loader2
 } from "lucide-react";
+import { SiGithub, SiDiscord, SiYoutube, SiTiktok, SiInstagram } from "react-icons/si";
+import { FaXTwitter } from "react-icons/fa6";
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,9 +49,12 @@ export default function Contact() {
   };
 
   const socialLinks = [
-    { icon: Github, label: "GitHub", href: "#", color: "hover:text-foreground" },
-    { icon: Twitter, label: "Twitter", href: "#", color: "hover:text-blue-500" },
-    { icon: Mail, label: "Email", href: "mailto:support@papergen.ai", color: "hover:text-red-500" },
+    { icon: SiGithub, label: "GitHub", href: "https://github.com/HorizonHnk/Academic-Document-Generator", username: "HorizonHnk" },
+    { icon: FaXTwitter, label: "Twitter", href: "https://twitter.com/HnkHorizon", username: "@HnkHorizon" },
+    { icon: SiDiscord, label: "Discord", href: "#", username: "hnk0422_76455" },
+    { icon: SiYoutube, label: "YouTube", href: "https://youtube.com/@HNK2005", username: "@HNK2005" },
+    { icon: SiTiktok, label: "TikTok", href: "https://tiktok.com/@codingfever", username: "@codingfever" },
+    { icon: SiInstagram, label: "Instagram", href: "https://instagram.com/hhnk.3693", username: "@hhnk.3693" },
   ];
 
   return (
@@ -154,7 +157,28 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-sm text-muted-foreground">support@papergen.ai</p>
+                    <a 
+                      href="mailto:hhnk3693@gmail.com" 
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      hhnk3693@gmail.com
+                    </a>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                    <SiGithub className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Source Code</p>
+                    <a 
+                      href="https://github.com/HorizonHnk/Academic-Document-Generator" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      GitHub Repository
+                    </a>
                   </div>
                 </div>
               </CardContent>
@@ -162,25 +186,28 @@ export default function Contact() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Follow Us</CardTitle>
+                <CardTitle>Follow & Connect</CardTitle>
                 <CardDescription>Stay updated with the latest features and news.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="flex gap-2">
-                  {socialLinks.map((link, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="icon"
-                      asChild
-                      data-testid={`button-social-${link.label.toLowerCase()}`}
-                    >
-                      <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label}>
-                        <link.icon className="h-4 w-4" />
-                      </a>
-                    </Button>
-                  ))}
-                </div>
+              <CardContent className="space-y-3">
+                {socialLinks.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 p-2 rounded-lg hover-elevate transition-colors"
+                    data-testid={`link-social-${link.label.toLowerCase()}`}
+                  >
+                    <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted">
+                      <link.icon className="h-4 w-4" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{link.label}</p>
+                      <p className="text-xs text-muted-foreground">{link.username}</p>
+                    </div>
+                  </a>
+                ))}
               </CardContent>
             </Card>
 
