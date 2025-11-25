@@ -197,7 +197,8 @@ export function ChatbotWidget() {
         ) : (
           <Button
             size="lg"
-            className="h-14 w-14 rounded-full shadow-lg"
+            variant="outline"
+            className="h-14 w-14 rounded-full shadow-lg bg-background/50 backdrop-blur-sm border-primary/30 text-primary/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
             onClick={() => setIsOpen(true)}
             data-testid="button-open-chatbot"
           >
