@@ -73,14 +73,21 @@ export default function Home() {
                 My Projects
               </Button>
             </Link>
-            <Button size="lg" className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90" data-testid="button-get-started">
+            <Button 
+              size="lg" 
+              className="gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90" 
+              data-testid="button-get-started"
+              onClick={() => {
+                document.getElementById('document-types')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               <Zap className="w-4 h-4" />
               Get Started
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div id="document-types" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 scroll-mt-8">
           {documentTypes.map((doc) => {
             const Icon = doc.icon;
             return (
