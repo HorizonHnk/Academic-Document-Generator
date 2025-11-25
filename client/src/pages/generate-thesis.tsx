@@ -25,7 +25,7 @@ interface Author {
 
 export default function GenerateThesis() {
   const [topic, setTopic] = useState("");
-  const [targetPages, setTargetPages] = useState("auto");
+  const [targetPages, setTargetPages] = useState("16-30");
   const [tone, setTone] = useState<ToneType>("academic");
   const [citationStyle, setCitationStyle] = useState("harvard");
   const [generateImages, setGenerateImages] = useState(true);
@@ -178,20 +178,44 @@ export default function GenerateThesis() {
 
               <div className="space-y-4 pt-4 border-t">
                 <div>
-                  <Label>Target Length</Label>
-                  <div className="grid grid-cols-3 gap-2 mt-2">
-                    {["auto", "50-100", "100-150", "150-200", "200+"].map((pages) => (
-                      <Button
-                        key={pages}
-                        variant={targetPages === pages ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setTargetPages(pages)}
-                        data-testid={`button-pages-${pages}`}
-                      >
-                        {pages === "auto" ? "Auto" : `${pages} Pages`}
-                      </Button>
-                    ))}
-                  </div>
+                  <Label>Document Type & Length</Label>
+                  <Select value={targetPages} onValueChange={setTargetPages}>
+                    <SelectTrigger className="mt-2" data-testid="select-thesis-length">
+                      <SelectValue placeholder="Select thesis type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="2-5">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">2-5 Pages - Research Proposal</span>
+                          <span className="text-xs text-muted-foreground">Brief summary or conference paper</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="6-15">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">6-15 Pages - Undergraduate Project</span>
+                          <span className="text-xs text-muted-foreground">Final year projects or capstone papers</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="16-30">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">16-30 Pages - Bachelors/Honors Thesis</span>
+                          <span className="text-xs text-muted-foreground">Full literature review, methodology & results</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="31-60">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">31-60 Pages - Masters Thesis</span>
+                          <span className="text-xs text-muted-foreground">Comprehensive study with data analysis</span>
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="60+">
+                        <div className="flex flex-col items-start">
+                          <span className="font-medium">60+ Pages - PhD Dissertation</span>
+                          <span className="text-xs text-muted-foreground">Extensive original doctoral research</span>
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
