@@ -26,7 +26,6 @@ interface Author {
 
 export default function GenerateConference() {
   const [topic, setTopic] = useState("");
-  const [selectedTemplate, setSelectedTemplate] = useState("CONF_PAPER");
   const [targetPages, setTargetPages] = useState("auto");
   const [tone, setTone] = useState<ToneType>("academic");
   const [citationStyle, setCitationStyle] = useState("ieee");
@@ -72,7 +71,6 @@ export default function GenerateConference() {
     const finalTopic = extractedText ? `${topic}\n\nAdditional Context:\n${extractedText}` : topic;
     generate({
       topic: finalTopic,
-      template: selectedTemplate,
       targetPages,
       tone,
       citationStyle,
@@ -178,30 +176,6 @@ export default function GenerateConference() {
               </Tabs>
 
               <div className="space-y-4 pt-4 border-t">
-                <div>
-                  <Label>Template Format</Label>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <Button
-                      variant={selectedTemplate === "CONF_PAPER" ? "default" : "outline"}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedTemplate("CONF_PAPER")}
-                      data-testid="button-template-conference"
-                    >
-                      <BookOpen className="w-4 h-4 mr-2" />
-                      Conference (IEEE)
-                    </Button>
-                    <Button
-                      variant={selectedTemplate === "THESIS" ? "default" : "outline"}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedTemplate("THESIS")}
-                      data-testid="button-template-thesis"
-                    >
-                      <FileIcon className="w-4 h-4 mr-2" />
-                      Thesis Style
-                    </Button>
-                  </div>
-                </div>
-
                 <div>
                   <Label>Target Length</Label>
                   <div className="grid grid-cols-3 gap-2 mt-2">
@@ -500,7 +474,7 @@ export default function GenerateConference() {
                 <div className="space-y-4 mb-6">
                   <Progress value={progress} className="w-full" />
                   <div className="text-sm text-muted-foreground text-center">
-                    Generating {selectedTemplate === "THESIS" ? "thesis-style" : "IEEE-formatted"} paper...
+                    Generating IEEE-formatted conference paper...
                   </div>
                 </div>
               )}
