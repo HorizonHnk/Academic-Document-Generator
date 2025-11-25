@@ -25,7 +25,7 @@ interface Author {
 
 export default function GenerateThesis() {
   const [topic, setTopic] = useState("");
-  const [targetPages, setTargetPages] = useState("16-30");
+  const [targetPages, setTargetPages] = useState("2-5");
   const [tone, setTone] = useState<ToneType>("academic");
   const [citationStyle, setCitationStyle] = useState("harvard");
   const [generateImages, setGenerateImages] = useState(true);
