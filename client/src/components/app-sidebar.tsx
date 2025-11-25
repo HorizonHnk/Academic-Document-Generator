@@ -14,9 +14,11 @@ import {
   LogIn,
   LogOut,
   User,
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AuthDialog } from "@/components/auth-dialog";
+import { ChatbotDialog } from "@/components/chatbot-dialog";
 import { onAuthChange, signOut } from "@/lib/firebase";
 import type { User as FirebaseUser } from "firebase/auth";
 import {
@@ -95,6 +97,7 @@ export function AppSidebar() {
   const [location] = useLocation();
   const { setOpenMobile, isMobile } = useSidebar();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
   const [user, setUser] = useState<FirebaseUser | null>(null);
 
   useEffect(() => {
@@ -200,6 +203,16 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="p-4 space-y-3">
+        <Button 
+          variant="outline" 
+          className="w-full gap-2"
+          onClick={() => setShowChatbot(true)}
+          data-testid="button-open-chatbot"
+        >
+          <MessageCircle className="h-4 w-4" />
+          Ask Assistant
+        </Button>
+        
         {user ? (
           <div className="space-y-3">
             <div className="flex items-center gap-2 p-2 rounded-lg bg-muted/50">
@@ -248,6 +261,7 @@ export function AppSidebar() {
       </SidebarFooter>
 
       <AuthDialog open={showAuthDialog} onOpenChange={setShowAuthDialog} />
+      <ChatbotDialog open={showChatbot} onOpenChange={setShowChatbot} />
     </Sidebar>
   );
 }

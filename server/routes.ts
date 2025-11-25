@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import multer from "multer";
-import { generateReportContent, generatePresentationContent, generateConferencePaperContent, generateThesisContent, extractTextFromImage } from "./lib/gemini";
+import { generateReportContent, generatePresentationContent, generateConferencePaperContent, generateThesisContent, extractTextFromImage, generateChatResponse } from "./lib/gemini";
 import { searchImages, getRandomImage } from "./lib/pixabay";
 import { extractTextFromFile } from "./lib/file-processor";
 import { getRandomTopic } from "../shared/random-topics";
@@ -209,6 +209,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Project deletion error:", error);
       res.status(500).json({ error: error.message || "Failed to delete project" });
+    }
+  });
+
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { message } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ error: "Message is required" });
+      }
+
+      const response = await generateChatResponse(message);
+      res.json({ success: true, response });
+    } catch (error: any) {
+      console.error("Chat error:", error);
+      res.status(500).json({ error: error.message || "Failed to generate response" });
     }
   });
 
