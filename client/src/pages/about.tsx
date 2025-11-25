@@ -10,39 +10,85 @@ import {
   Zap,
   Shield,
   Globe,
-  ExternalLink
+  ExternalLink,
+  Upload,
+  Cloud,
+  Bot,
+  FolderOpen,
+  Eye,
+  Smartphone
 } from "lucide-react";
 import { SiGithub, SiYoutube, SiTiktok } from "react-icons/si";
 import { FaXTwitter } from "react-icons/fa6";
 
 export default function About() {
-  const features = [
+  const documentTypes = [
     {
       icon: FileText,
       title: "Technical Reports",
-      description: "Generate comprehensive BET-standard technical reports with proper structure, citations, and formatting."
+      description: "Generate comprehensive BET-standard technical reports with proper structure, citations, and formatting.",
+      exports: "HTML, Word (.docx), PDF"
     },
     {
       icon: Presentation,
       title: "PowerPoint Presentations",
-      description: "Create professional slide decks with speaker notes, visual prompts, and export to PPTX format."
+      description: "Create professional slide decks with speaker notes, visual prompts, and TTS coaching support.",
+      exports: "HTML, PowerPoint (.pptx), PDF"
     },
     {
       icon: BookOpen,
       title: "Conference Papers",
-      description: "Produce IEEE-formatted conference papers with proper academic structure and citations."
+      description: "Produce IEEE-formatted conference papers with two-column layout and academic citations.",
+      exports: "HTML (IEEE), Word (.docx), PDF"
     },
     {
       icon: GraduationCap,
       title: "Thesis & Dissertations",
-      description: "Generate Harvard-style thesis documents with comprehensive chapters and bibliography."
+      description: "Generate Harvard-style thesis documents with front matter, chapters, and bibliography.",
+      exports: "HTML (Harvard), Word (.docx), PDF"
+    }
+  ];
+
+  const platformFeatures = [
+    {
+      icon: Upload,
+      title: "File Upload Support",
+      description: "Upload PDF, DOCX, TXT files or images to extract content and use as context for generation."
+    },
+    {
+      icon: Cloud,
+      title: "Cloud Save",
+      description: "Save your projects to Firebase cloud storage and access them from anywhere."
+    },
+    {
+      icon: Bot,
+      title: "AI Chatbot Assistant",
+      description: "Get help navigating the platform with our built-in AI chatbot powered by Gemini."
+    },
+    {
+      icon: FolderOpen,
+      title: "Project Management",
+      description: "Organize and manage all your generated documents in one place with the Projects page."
+    },
+    {
+      icon: Eye,
+      title: "Real-time Preview",
+      description: "See your document being generated in real-time with live preview as content is created."
+    },
+    {
+      icon: Smartphone,
+      title: "Fully Responsive",
+      description: "Works seamlessly on all devices from mobile phones (320px) to ultra-wide monitors."
     }
   ];
 
   const capabilities = [
     { icon: Zap, text: "AI-Powered Content Generation" },
-    { icon: Shield, text: "Multiple Citation Styles" },
-    { icon: Globe, text: "Multi-Format Export" },
+    { icon: Shield, text: "Multiple Citation Styles (IEEE, Harvard)" },
+    { icon: Globe, text: "Multi-Format Export (HTML, DOCX, PPTX, PDF)" },
+    { icon: Upload, text: "File Upload Processing" },
+    { icon: Cloud, text: "Firebase Cloud Storage" },
+    { icon: Bot, text: "AI Chatbot Assistant" },
   ];
 
   return (
@@ -70,32 +116,59 @@ export default function About() {
           ))}
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {features.map((feature, index) => (
-            <Card key={index} className="hover-elevate" data-testid={`card-feature-${index}`}>
-              <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <feature.icon className="h-5 w-5 text-primary" />
+        <Card>
+          <CardHeader>
+            <CardTitle>Document Generators</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-2">
+              {documentTypes.map((doc, index) => (
+                <div key={index} className="p-4 border rounded-lg hover-elevate" data-testid={`card-doctype-${index}`}>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                      <doc.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <h4 className="font-medium">{doc.title}</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">{doc.description}</p>
+                  <p className="text-xs text-muted-foreground"><span className="font-medium">Exports:</span> {doc.exports}</p>
                 </div>
-                <CardTitle className="text-lg">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Platform Features</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {platformFeatures.map((feature, index) => (
+                <div key={index} className="p-4 border rounded-lg hover-elevate" data-testid={`card-feature-${index}`}>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                      <feature.icon className="h-4 w-4 text-primary" />
+                    </div>
+                    <h4 className="font-medium text-sm">{feature.title}</h4>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{feature.description}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>
             <CardTitle>Technology Stack</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               <div>
                 <h4 className="font-medium mb-2">AI & Generation</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>Google Gemini 2.5 Flash for content</li>
+                  <li>Google Gemini 2.5 Flash</li>
                   <li>Pixabay API for images</li>
                   <li>KaTeX for LaTeX rendering</li>
                 </ul>
@@ -103,10 +176,19 @@ export default function About() {
               <div>
                 <h4 className="font-medium mb-2">Export Formats</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>HTML (IEEE/Harvard styles)</li>
                   <li>Microsoft Word (DOCX)</li>
                   <li>PowerPoint (PPTX)</li>
                   <li>PDF Document</li>
-                  <li>HTML Preview</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium mb-2">Backend & Storage</h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>Firebase Authentication</li>
+                  <li>Firebase Firestore</li>
+                  <li>Express.js API</li>
+                  <li>React + TypeScript</li>
                 </ul>
               </div>
             </div>
