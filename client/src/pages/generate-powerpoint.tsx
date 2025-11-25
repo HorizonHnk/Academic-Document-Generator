@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Presentation, Sparkles, Upload, Download, Save, Play, X, FileIcon } from "lucide-react";
+import { Presentation, Sparkles, Upload, Download, Save, Play, X, FileIcon, FileCode, Printer, Cloud } from "lucide-react";
 import { GeneratorLayout } from "@/components/generator-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useDocumentGenerator } from "@/hooks/use-document-generator";
 import { useRandomTopic } from "@/hooks/use-random-topic";
 import { useFileUpload } from "@/hooks/use-file-upload";
@@ -222,14 +223,32 @@ export default function GeneratePowerPoint() {
                   <CardDescription>Real-time preview of your presentation</CardDescription>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" data-testid="button-save-project">
-                    <Save className="w-4 h-4 mr-2" />
+                  <Button variant="outline" size="sm" data-testid="button-cloud-save">
+                    <Cloud className="w-4 h-4 mr-2" />
                     Save
                   </Button>
-                  <Button variant="outline" size="sm" data-testid="button-export-pptx">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export PPTX
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" data-testid="button-export-menu">
+                        <Download className="w-4 h-4 mr-2" />
+                        Export
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem data-testid="export-html">
+                        <FileCode className="w-4 h-4 mr-2" />
+                        Export as HTML
+                      </DropdownMenuItem>
+                      <DropdownMenuItem data-testid="export-pptx">
+                        <Presentation className="w-4 h-4 mr-2" />
+                        Export as PowerPoint (.pptx)
+                      </DropdownMenuItem>
+                      <DropdownMenuItem data-testid="export-pdf">
+                        <Printer className="w-4 h-4 mr-2" />
+                        Export as PDF
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </CardHeader>

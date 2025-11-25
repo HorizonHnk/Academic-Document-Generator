@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GraduationCap, Sparkles, Upload, Download, Save, X, FileIcon, Settings, UserPlus, Trash2 } from "lucide-react";
+import { GraduationCap, Sparkles, Upload, Download, Save, X, FileIcon, Settings, UserPlus, Trash2, FileCode, Printer, Cloud } from "lucide-react";
 import { GeneratorLayout } from "@/components/generator-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useDocumentGenerator } from "@/hooks/use-document-generator";
 import { useRandomTopic } from "@/hooks/use-random-topic";
 import { useFileUpload } from "@/hooks/use-file-upload";
@@ -461,14 +462,28 @@ export default function GenerateThesis() {
                   <CardDescription>Real-time preview of your thesis document</CardDescription>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" data-testid="button-save-project">
-                    <Save className="w-4 h-4 mr-2" />
+                  <Button variant="outline" size="sm" data-testid="button-cloud-save">
+                    <Cloud className="w-4 h-4 mr-2" />
                     Save
                   </Button>
-                  <Button variant="outline" size="sm" data-testid="button-export-pdf">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" data-testid="button-export-menu">
+                        <Download className="w-4 h-4 mr-2" />
+                        Export
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem data-testid="export-html">
+                        <FileCode className="w-4 h-4 mr-2" />
+                        Export as HTML (Harvard)
+                      </DropdownMenuItem>
+                      <DropdownMenuItem data-testid="export-pdf">
+                        <Printer className="w-4 h-4 mr-2" />
+                        Export as PDF
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </CardHeader>
