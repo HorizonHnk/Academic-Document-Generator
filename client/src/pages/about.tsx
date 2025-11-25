@@ -115,10 +115,13 @@ export default function About() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Developer & Source Code</CardTitle>
+            <CardTitle>About HNK</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center gap-4 flex-wrap">
+            <p className="text-muted-foreground leading-relaxed">
+              HNK is a Computer Engineer based in Cape Town, South Africa, with a versatile skill set spanning software development, scientific computing, and embedded systems. He combines technical proficiency in programming languages with hands-on experience in network infrastructure and electronics.
+            </p>
+            <div className="flex items-center gap-4 flex-wrap pt-2">
               <Button variant="outline" asChild data-testid="link-github-repo">
                 <a 
                   href="https://github.com/HorizonHnk/Academic-Document-Generator" 
@@ -165,9 +168,6 @@ export default function About() {
                 </a>
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Built with passion for helping students and researchers create professional academic documents efficiently.
-            </p>
           </CardContent>
         </Card>
 
